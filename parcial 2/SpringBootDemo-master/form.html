@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+ $(".boton6").click(function(){
+	 var name = $("#id3").val();
+	 var description = $("#id4").val();
+	 $.ajax({
+		type: "POST",
+		url: "http://localhost:8080/CategoryRestService/Add", 
+		contentType: 'application/json',
+		data: JSON.stringify(
+			{
+				"name":name, 
+				"description":description}
+			),
+		success: function(result){
+			console.log(result);
+			
+		},
+		error : function(xhr, status) {
+			console.log(xhr);
+		}
+	});
+ })
+});
+</script>
+</head>
+<body>
+
+<div id="div6">añadir nueva categoria<br><br>
+	ingrese nombre <input type="text" id="id3"><br><br>
+	ingrese descripcion <input type="text" id="id4"><br><br>
+	<button class="boton6">añadir</button><br>
+</div><br>
+
+
+</body>
+</html>

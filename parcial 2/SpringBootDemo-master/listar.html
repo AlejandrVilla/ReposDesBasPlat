@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+  $(".boton1").click(function(){
+    $.ajax({
+    url: "http://localhost:8080/ItemRestService/FindAll", 
+    success: function(result){
+    	console.log(result);
+    	var obj = result,  // get entry object (array) from JSON data
+        ul = $("<ul>");                    // create a new ul element
+    	// iterate over the array and build the list
+     	for (var i = 0, l = obj.length; i < l; ++i) {
+         ul.append("<li> " + obj[i].id + " --- " + obj[i].description + "</li>");
+     }
+     $("#div1").append(ul);    // add the list to the DOM
+    }});
+  });
+ $(".boton2").click(function(){
+	 $.ajax({
+		    url: "http://localhost:8080/CategoryRestService/FindAll", 
+		    success: function(result){
+		    	console.log(result);
+		    	var obj = result,  // get entry object (array) from JSON data
+		        ul = $("<ul>");                    // create a new ul element
+		    	// iterate over the array and build the list
+		     	for (var i = 0, l = obj.length; i < l; ++i) {
+		         ul.append("<li> " + obj[i].id + " --- " + obj[i].name + " --- " + obj[i].description + "</li>");
+		     }
+		     $("#div2").append(ul);    // add the list to the DOM
+		    }});
+ });
+ $(".boton3").click(function(){
+	 $.post("http://localhost:8080/ItemRestService/FindAll", function (data){
+		 console.log(data);
+		 var obj = data,  // get entry object (array) from JSON data
+	     ul = $("<ul>");                    // create a new ul element
+	    // iterate over the array and build the list
+	     for (var i = 0, l = obj.length; i < l; ++i) {
+	        ul.append("<li> " + obj[i].id + " --- " + obj[i].description + "</li>");
+	     }
+	     $("#div3").append(ul);    // add the list to the DOM
+	 });
+ });
+ $(".boton4").click(function(){
+	 var txt = $("#id1").val();
+	 $.post("http://localhost:8080/CategoryRestService/FindById/"+txt, function (data){
+		 console.log(data);
+		 var obj = data,  // get entry object (array) from JSON data
+	     ul = $("<ul>");                    // create a new ul element
+	    // iterate over the array and build the list
+	     ul.append("<li> " + obj.id + " --- " + obj.name + "</li>");
+	     $("#div4").append(ul);    // add the list to the DOM
+	 });
+ });
+ $(".boton5").click(function(){
+	 var txt = $("#id2").val();
+	 $.post("http://localhost:8080/ItemRestService/FindById/"+txt, function (data){
+		 console.log(data);
+		 var obj = data,  // get entry object (array) from JSON data
+	     ul = $("<ul>");                    // create a new ul element	     
+	     ul.append("<li> " + obj.id + " --- " + obj.description + "</li>");
+	     $("#div5").append(ul);    // add the list to the DOM
+	 });
+ });
+ $(".boton6").click(function(){
+	 var name = $("#id3").val();
+	 var description = $("#id4").val();
+	 $.ajax({
+		type: "POST",
+		url: "http://localhost:8080/CategoryRestService/Add", 
+		contentType: 'application/json',
+		data: JSON.stringify(
+			{
+				"name":name, 
+				"description":description}
+			),
+		success: function(result){
+			console.log(result);
+			
+		},
+		error : function(xhr, status) {
+			console.log(xhr);
+		}
+	});
+ })
+});
+</script>
+</head>
+<body>
+
+<div><h2>mostrar listado</h2></div>
+<div id="div1">crea lista usando $ajax
+	<button class="boton1">click para ver</button>
+</div><br>
+
+<div id="div2">crea lista de las categorias usando $ajax
+	<button class="boton2">click para ver</button><br>
+</div><br>
+
+<div id="div3">crea lista de los items usando $post
+	<button class="boton3">click para ver</button><br>
+</div><br>
+
+<div id="div4">buscar categoria por id
+	<input type="text" id="id1">
+	<button class="boton4">enviar</button><br>
+</div><br>
+
+<div id="div5">buscar item por id
+	<input type="text" id="id2">
+	<button class="boton5">enviar</button><br>
+</div><br>
+
+
+
+</body>
+</html>
